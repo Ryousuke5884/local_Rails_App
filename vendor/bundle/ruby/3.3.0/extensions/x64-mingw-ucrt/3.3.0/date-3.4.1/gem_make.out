@@ -1,0 +1,25 @@
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/date-3.4.1/ext/date
+C:/Ruby33-x64/bin/ruby.exe extconf.rb
+checking for rb_category_warn()... yes
+checking for timezone in time.h with  -Werror... no
+checking for altzone in time.h with  -Werror... no
+creating Makefile
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/date-3.4.1/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-fn4pv9 sitelibdir\=./.gem.20250331-25100-fn4pv9 clean
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/date-3.4.1/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-fn4pv9 sitelibdir\=./.gem.20250331-25100-fn4pv9
+generating date_core-x64-mingw-ucrt.def
+compiling date_core.c
+compiling date_parse.c
+compiling date_strftime.c
+compiling date_strptime.c
+linking shared-object date_core.so
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/date-3.4.1/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-fn4pv9 sitelibdir\=./.gem.20250331-25100-fn4pv9 install
+/usr/bin/install -c -m 0755 date_core.so ./.gem.20250331-25100-fn4pv9
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/date-3.4.1/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-fn4pv9 sitelibdir\=./.gem.20250331-25100-fn4pv9 clean

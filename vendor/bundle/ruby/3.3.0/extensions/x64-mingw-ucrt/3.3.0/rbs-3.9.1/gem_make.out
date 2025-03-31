@@ -1,0 +1,29 @@
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.1/ext/rbs_extension
+C:/Ruby33-x64/bin/ruby.exe extconf.rb
+checking for whether -std=gnu99 is accepted as CFLAGS... yes
+creating Makefile
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.1/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-850qm3 sitelibdir\=./.gem.20250331-25100-850qm3 clean
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.1/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-850qm3 sitelibdir\=./.gem.20250331-25100-850qm3
+generating rbs_extension-x64-mingw-ucrt.def
+compiling ./../../src/constants.c
+compiling ./../../src/ruby_objs.c
+compiling ./../../src/util/rbs_constant_pool.c
+compiling lexer.c
+compiling lexstate.c
+compiling location.c
+compiling main.c
+compiling parser.c
+compiling parserstate.c
+compiling unescape.c
+linking shared-object rbs_extension.so
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.1/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-850qm3 sitelibdir\=./.gem.20250331-25100-850qm3 install
+/usr/bin/install -c -m 0755 rbs_extension.so ./.gem.20250331-25100-850qm3
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/rbs-3.9.1/ext/rbs_extension
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-850qm3 sitelibdir\=./.gem.20250331-25100-850qm3 clean

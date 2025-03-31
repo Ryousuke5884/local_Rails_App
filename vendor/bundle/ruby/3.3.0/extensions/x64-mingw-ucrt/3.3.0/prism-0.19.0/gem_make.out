@@ -1,0 +1,48 @@
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/prism-0.19.0/ext/prism
+C:/Ruby33-x64/bin/ruby.exe extconf.rb
+checking for prism.h in C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/prism-0.19.0/include... yes
+checking for prism/extension.h in C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/prism-0.19.0/ext... yes
+checking for whether -fvisibility=hidden is accepted as CFLAGS... yes
+compiling build/static/diagnostic.o
+src/diagnostic.c: In function 'pm_diagnostic_list_append':
+src/diagnostic.c:285:69: error: 'calloc' sizes specified with 'sizeof' in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
+  285 |     pm_diagnostic_t *diagnostic = (pm_diagnostic_t *) calloc(sizeof(pm_diagnostic_t), 1);
+      |                                                                     ^~~~~~~~~~~~~~~
+src/diagnostic.c:285:69: note: earlier argument should specify number of elements, later size of each element
+src/diagnostic.c: In function 'pm_diagnostic_list_append_format':
+src/diagnostic.c:315:69: error: 'calloc' sizes specified with 'sizeof' in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
+  315 |     pm_diagnostic_t *diagnostic = (pm_diagnostic_t *) calloc(sizeof(pm_diagnostic_t), 1);
+      |                                                                     ^~~~~~~~~~~~~~~
+src/diagnostic.c:315:69: note: earlier argument should specify number of elements, later size of each element
+cc1.exe: all warnings being treated as errors
+make: *** [Makefile:49: build/static/diagnostic.o] エラー 1
+*** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+
+Provided configuration options:
+	--with-opt-dir
+	--without-opt-dir
+	--with-opt-include=${opt-dir}/include
+	--without-opt-include
+	--with-opt-lib=${opt-dir}/lib
+	--without-opt-lib
+	--with-make-prog
+	--without-make-prog
+	--srcdir=.
+	--curdir
+	--ruby=C:/Ruby33-x64/bin/$(RUBY_BASE_NAME)
+	--enable-debug-mode-build
+	--disable-debug-mode-build
+extconf.rb:41:in `system': Command failed with exit 2: make (RuntimeError)
+	from extconf.rb:41:in `block in make'
+	from extconf.rb:40:in `chdir'
+	from extconf.rb:40:in `make'
+	from extconf.rb:92:in `<main>'
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/extensions/x64-mingw-ucrt/3.3.0/prism-0.19.0/mkmf.log
+
+extconf failed, exit code 1

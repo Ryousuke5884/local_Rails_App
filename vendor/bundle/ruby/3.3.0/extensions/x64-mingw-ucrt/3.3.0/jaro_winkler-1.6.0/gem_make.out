@@ -1,0 +1,22 @@
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/jaro_winkler-1.6.0/ext/jaro_winkler
+C:/Ruby33-x64/bin/ruby.exe extconf.rb
+creating Makefile
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/jaro_winkler-1.6.0/ext/jaro_winkler
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-2d0a3j sitelibdir\=./.gem.20250331-25100-2d0a3j clean
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/jaro_winkler-1.6.0/ext/jaro_winkler
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-2d0a3j sitelibdir\=./.gem.20250331-25100-2d0a3j
+generating jaro_winkler_ext-x64-mingw-ucrt.def
+compiling adj_matrix.c
+compiling codepoints.c
+compiling jaro.c
+compiling jaro_winkler.c
+linking shared-object jaro_winkler/jaro_winkler_ext.so
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/jaro_winkler-1.6.0/ext/jaro_winkler
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-2d0a3j sitelibdir\=./.gem.20250331-25100-2d0a3j install
+/usr/bin/install -c -m 0755 jaro_winkler_ext.so ./.gem.20250331-25100-2d0a3j/jaro_winkler
+
+current directory: C:/Users/Ryous/Rails_Apps/local_practice_app/local_Rails_App/vendor/bundle/ruby/3.3.0/gems/jaro_winkler-1.6.0/ext/jaro_winkler
+make DESTDIR\= sitearchdir\=./.gem.20250331-25100-2d0a3j sitelibdir\=./.gem.20250331-25100-2d0a3j clean
