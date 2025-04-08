@@ -1,0 +1,15 @@
+<% provide(:title, "Log in") %>
+<h1>Log in</h1>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <!--アカウント作成処理と違ってsessionはモデルを持たないので@userのような引数はform_withに渡せない、form_withはurlを明示した後ハッシュを渡す、そこにスコープでsessionを渡すとparamsの中のsessionの中にそれぞれ値を入れてくれる-->
+        <%= form_with(url: login_path, scope: :session) do |f| %>
+            <%= f.label :email %>
+            <%= f.email_field :email, class: 'form-control' %>
+            <%= f.label :password %>
+            <%= f.password_field :password, class: 'form-control' %>
+            <%= f.submit "Log in", class: "btn btn-primary" %>
+        <% end %>
+        <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+    </div>
+</div>

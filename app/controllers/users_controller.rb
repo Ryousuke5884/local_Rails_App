@@ -12,6 +12,8 @@ class UsersController < ApplicationController
     #下の関数でStrongParamatorを使って制限した値でnewをする
     @user = User.new(user_params)
     if @user.save
+      reset_session
+      log_in @user
       flash[:success] = "Welcome to the Sample App!"
 
       redirect_to user_url(@user)

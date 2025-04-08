@@ -15,4 +15,11 @@ class ActiveSupport::TestCase
   include ApplicationHelper
 
   # Add more helper methods to be used by all tests here...
+
+
+  # テストユーザーがログイン中の場合に true を返す
+  #isを付けたのはtestじゃないコントローラーのヘルパーと同じ名前にならないように
+  def is_logged_in?
+    !session[:user_id].nil?
+  end
 end
