@@ -22,4 +22,18 @@ class ActiveSupport::TestCase
   def is_logged_in?
     !session[:user_id].nil?
   end
+
+  #テストユーザーでログインする単体テスト側のloginasメソッド
+  def log_in_as(user)
+    session[:user_id] = user.id
+  end
+end
+
+#統合テスト側でもloginasを使えるようにする
+class ActionDispatch::IntegrationTest
+
+  #統合テストではセッションを直接呼べないのでloginにpostする
+  def log_in_as(user,password:"password",remember_me:"1")
+    post login_path,params:{session:{email:user.email,password:password,remember_me:remember_me}}
+  end
 end

@@ -4,14 +4,24 @@ class SessionsController < ApplicationController
 
   #ログイン実行処理、こいつらにビューは必要ない
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
+    @user = User.find_by(email: params[:session][:email].downcase)
 
     #ログイン認証
-    if user && user.authenticate(params[:session][:password])
+    if @user && @user.authenticate(params[:session][:password])
       #reset_sessionはRailsが自動で作るメソッド、log_inメソッドは親のapplication_controllerで私が定義したもの、userは引数の()省略
       reset_session
-      log_in user
-      redirect_to user
+
+      #paramsのチェックボックスの値はtrueなら"1"が入る
+      if params[:session][:remember_me]== "1"
+        #userでcookieに書き込む処理(helper内の関数)
+        remember(@user)
+      else
+        forget(@user)
+      end
+
+      
+      log_in @user
+      redirect_to @user
     else
       #flash.nowはその後リクエストが発生した際に消えるもの。リロードなしで再レンダリングの場合flashを消せて便利
       flash.now[:danger] = 'Invalid email/password combination'
@@ -21,7 +31,7 @@ class SessionsController < ApplicationController
 
   #ログアウト処理、ヘルパーにあるlog_out関数を呼ぶ
   def destroy
-    log_out
+    log_out if logged_in?
     redirect_to root_url, status: :see_other
   end
 end
