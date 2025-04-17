@@ -19,7 +19,8 @@ class User < ApplicationRecord
   #has_secure_passwordについては6.3を参照
   has_secure_password
 
-  validates :password , presence:true,length:{minimum: 6}
+  #空を許しているのはユーザー更新時にパスワードが空でも通すため、新規登録の際のパスワードバリテーションはhas_secure_passwordで引っかかるから大丈夫
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
 
   #クラス名.関数目の書き方はクラスメソッド、普通のインスタンスメソッドと違ってインスタンスを生成しなくても、まとめたい処理を入れる。例えばAをハッシュ化してA´にして返すだけなどユーザー個人で異ならないただの処理

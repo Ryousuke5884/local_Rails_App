@@ -8,6 +8,8 @@ class SessionsController < ApplicationController
 
     #ログイン認証
     if @user && @user.authenticate(params[:session][:password])
+      #sessionヘルパーで保存しといたforwading_urlキーにアクセスして取得
+      forwarding_url = session[:forwarding_url]
       #reset_sessionはRailsが自動で作るメソッド、log_inメソッドは親のapplication_controllerで私が定義したもの、userは引数の()省略
       reset_session
 
@@ -21,7 +23,7 @@ class SessionsController < ApplicationController
 
       
       log_in @user
-      redirect_to @user
+      redirect_to forwarding_url || @user
     else
       #flash.nowはその後リクエストが発生した際に消えるもの。リロードなしで再レンダリングの場合flashを消せて便利
       flash.now[:danger] = 'Invalid email/password combination'
