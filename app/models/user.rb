@@ -1,10 +1,13 @@
 class User < ApplicationRecord
   #attr_accessorを使うと、remember_tokenにアクセスするセッターとゲッターを生成してくれる・constなどで箱を作らないのはユーザーごとに違う値を入れるから、これならインスタンスごとにremember_tokenを分けられる 
   #remember_tokenは生成したトークンを入れるために一時的に使いまわしたいインスタンス変数、メモリ上のみ、DBにはremember_digestに変換してから入れたい
-  attr_accessor :remember_token
+  attr_accessor :remember_token, :activation_token
 
   #dbには小文字で保存する
-  before_save { email.downcase!}
+  before_save :downcase_email
+
+  #新しいユーザーからUser.newで生成される直前に有効化に必要な情報を生成しておく、それをUserオブジェクト生成後に保存
+  before_create :create_activation_digest
 
 
   #:trueはオプションハッシュでメソッドの最後の引数としてハッシュを渡すときかっこ省略できる、validates(:name, presence: true)と同じ
@@ -53,14 +56,41 @@ class User < ApplicationRecord
   end
 
 
-  #渡されたトークンがダイジェストと一致したらtrue
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  #sendメソッドはRubyのメタプログラミングであまり難しくないが、11.3.1参照
+  #attributeは:rememberや:activationなどどんなダイジェストを参照するか、tokenは比較対象でユーザーが送ってくるもの。
+  # 渡されたトークンがダイジェストと一致したら true を返す
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+
+    #digestとtokenを比較してboolを返す
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   #ユーザーのログイン情報を破棄する
   def forget
     update_attribute(:remember_digest,nil)
+  end
+
+
+  # メールアドレスをすべて小文字にする
+  def downcase_email
+    self.email = email.downcase
+  end
+
+  # 有効化トークンとダイジェストを作成および代入する,User.newの直前に呼ばれて代入される
+  def create_activation_digest
+    self.activation_token = User.new_token
+    self.activation_digest = User.digest(activation_token)
+  end
+
+  # アカウントを有効にする
+  def activate
+    update_attribute(:activated, true)
+    update_attribute(:activated_at, Time.zone.now)
+  end
+  # 有効化用のメールを送信する
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
   end
 end

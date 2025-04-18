@@ -8,22 +8,24 @@ class SessionsController < ApplicationController
 
     #ログイン認証
     if @user && @user.authenticate(params[:session][:password])
-      #sessionヘルパーで保存しといたforwading_urlキーにアクセスして取得
-      forwarding_url = session[:forwarding_url]
-      #reset_sessionはRailsが自動で作るメソッド、log_inメソッドは親のapplication_controllerで私が定義したもの、userは引数の()省略
-      reset_session
 
-      #paramsのチェックボックスの値はtrueなら"1"が入る
-      if params[:session][:remember_me]== "1"
-        #userでcookieに書き込む処理(helper内の関数)
-        remember(@user)
+      if @user.activated?
+        #sessionヘルパーで保存しといたforwading_urlキーにアクセスして取得
+        forwarding_url = session[:forwarding_url]
+        #reset_sessionはRailsが自動で作るメソッド、log_inメソッドは親のapplication_controllerで私が定義したもの、userは引数の()省略
+        reset_session
+
+        #paramsのrememberチェックボックスがtrueなら1が入る 1ならログインを記憶
+        params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
+        log_in @user
+        redirect_to forwarding_url || @user
+
       else
-        forget(@user)
+        message = "Account not activated. "
+        message += "Check your email for the activation link."
+        flash[:warning] = message
+        redirect_to root_url
       end
-
-      
-      log_in @user
-      redirect_to forwarding_url || @user
     else
       #flash.nowはその後リクエストが発生した際に消えるもの。リロードなしで再レンダリングの場合flashを消せて便利
       flash.now[:danger] = 'Invalid email/password combination'

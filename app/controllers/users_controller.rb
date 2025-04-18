@@ -9,14 +9,16 @@ class UsersController < ApplicationController
 
   def index
     #@users変数に全ユーザーを入れて扱う
-    #paginateが扱えるオブジェクトにするべくpaginate関数で変換する
+    #paginateが扱えるオブジェクトにするべくpaginate関数で変換する,下の方を使うと有効か前のアカウントを表示しなくできるけど、メアドで認証できないから消せなくなるからしない
     @users = User.paginate(page: params[:page])
+    #@users = User.where(activated: true).paginate(page: params[:page])
   end
 
 
 
   def show
     @user = User.find(params[:id])
+    redirect_to root_url and return unless @user.activated?
   end
 
   def new
@@ -27,11 +29,15 @@ class UsersController < ApplicationController
     #下の関数でStrongParamatorを使って制限した値でnewをする
     @user = User.new(user_params)
     if @user.save
-      reset_session
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!"
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url
 
-      redirect_to user_url(@user)
+      # reset_session
+      # log_in @user
+      # flash[:success] = "Welcome to the Sample App!"
+
+      # redirect_to user_url(@user)
     else
       render "new",status: :unprocessable_entity
     end 
