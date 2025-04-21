@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   #attr_accessorを使うと、remember_tokenにアクセスするセッターとゲッターを生成してくれる・constなどで箱を作らないのはユーザーごとに違う値を入れるから、これならインスタンスごとにremember_tokenを分けられる 
   #remember_tokenは生成したトークンを入れるために一時的に使いまわしたいインスタンス変数、メモリ上のみ、DBにはremember_digestに変換してから入れたい
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :activation_token,:reset_token
 
   #dbには小文字で保存する
   before_save :downcase_email
@@ -93,4 +93,34 @@ class User < ApplicationRecord
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
   end
+
+
+  #パスワード再設定用の属性を設定する
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_attribute(:reset_digest,User.digest(reset_token))
+    update_attribute(:reset_sent_at,Time.zone.now)
+  end
+
+  #パスワード再設定用のメールを送信
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+
+  # パスワード再設定の期限が切れている場合は true を返す
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+
+  private
+    # メールアドレスをすべて小文字にする
+    def downcase_email
+      self.email = email.downcase
+    end
+    # 有効化トークンとダイジェストを作成および代入する
+    def create_activation_digest
+      self.activation_token = User.new_token
+      self.activation_digest = User.digest(activation_token)
+    end
 end

@@ -10,18 +10,13 @@ class UserMailer < ApplicationMailer
 
   def account_activation(user)
     @user = user
-    @activation_url = edit_account_activation_url(
-      @user.activation_token,
-      host: Rails.application.config.action_mailer.default_url_options[:host],
-      email: @user.email
-    )
-    mail to: @user.email, subject: "Account activation"
+    @activation_url = edit_account_activation_url(user.activation_token, email: user.email)
+    mail to: user.email, subject: "Account activation"
   end
   
-  
-  def password_reset
-    @greeting = "Hi"
+  def password_reset(user)
+    @user = user
 
-    mail to: "to@example.org"
+    mail to:user.email,subject: "Password reset"
   end
 end
