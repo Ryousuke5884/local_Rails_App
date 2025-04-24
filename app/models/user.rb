@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+  #micropostsとの関連付け　dependent: :destroyでこのユーザーモデルが消されたときhasManyのマイクロポストも消える
+  has_many :microposts, dependent: :destroy
+
+
+
   #attr_accessorを使うと、remember_tokenにアクセスするセッターとゲッターを生成してくれる・constなどで箱を作らないのはユーザーごとに違う値を入れるから、これならインスタンスごとにremember_tokenを分けられる 
   #remember_tokenは生成したトークンを入れるために一時的に使いまわしたいインスタンス変数、メモリ上のみ、DBにはremember_digestに変換してから入れたい
   attr_accessor :remember_token, :activation_token,:reset_token
@@ -111,6 +116,14 @@ class User < ApplicationRecord
   # パスワード再設定の期限が切れている場合は true を返す
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+
+  # 試作 feed の定義
+  # 完全な実装は次章の「ユーザーをフォローする」を参照
+  def feed
+    #User_id=?はSQLクエリに代入される前にidがエスケープされるのでSQLインジェクションを回避できる。Self.idが入るらしい。
+    Micropost.where("user_id = ?", id)
   end
 
   private

@@ -14,5 +14,11 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
+  #Homeやプロフィールで表示するからnew,editは不要
+  resources :microposts,only:[:create,:destroy]
+
+  #無効なマイクロポストを送信した後にブラウザ画面再読み込みをした際にNo rute matches[GET] "/microposts"が起こるのを避けるため
+  get '/microposts', to: 'static_pages#home'
+
   
 end

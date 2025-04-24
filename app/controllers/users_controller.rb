@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  #ログインを要求する
+  #ログインを要求する、これはmicropostsController空も使うので親クラスのApplicationControllerで定義
   before_action :logged_in_user,only:[:index,:edit,:update,:destroy]
   #正しいユーザーか確認する
   before_action :correct_user, only: [:edit, :update]
@@ -19,6 +19,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     redirect_to root_url and return unless @user.activated?
+    #micropostを一斉に表示しないようにページネーションするための変換
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def new
@@ -78,16 +80,6 @@ class UsersController < ApplicationController
    end
 
    #beforeフィルタ
-
-   #ログイン済みユーザーか検証
-   def logged_in_user
-    unless logged_in?
-      #sessionヘルパー内の手作り関数、ここで直前のurlを覚えておく
-      store_location
-      flash[:danger] = "Please log in."
-      redirect_to login_url,status: :see_other
-    end
-   end
 
    # 正しいユーザーかどうか確認
   def correct_user
