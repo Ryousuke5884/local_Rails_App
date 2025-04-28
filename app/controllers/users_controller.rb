@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   #ログインを要求する、これはmicropostsController空も使うので親クラスのApplicationControllerで定義
-  before_action :logged_in_user,only:[:index,:edit,:update,:destroy]
+  before_action :logged_in_user,only:[:index,:edit,:update,:destroy,:following, :followers]
   #正しいユーザーか確認する
   before_action :correct_user, only: [:edit, :update]
   #admin_userのprivateメソッドをつかって管理者かどうか確認してからdestroy実行
@@ -72,6 +72,21 @@ class UsersController < ApplicationController
     redirect_to users_url, status: :see_other
   end
 
+
+  #ffどちらも同じビューをレンダリングしたいのでrenderで明示的に書く
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+  end
+  
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
+  end
 
   #strongParametorを使ってユーザーが送信できる情報に制限をかける、admin属性などをいじられないようにするため
   private

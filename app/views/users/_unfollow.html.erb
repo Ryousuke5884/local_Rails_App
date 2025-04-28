@@ -1,0 +1,5 @@
+<!-- form_with(model: モデルオブジェクト, scope: スコープ名, url: 送信先URL, method: HTTPメソッド, local: ローカル送信かどうか, html: HTMLオプション) do |f| -->    
+
+<%= form_with(model: current_user.active_relationships.find_by(followed: @user),html: { method: :delete }) do |f| %>
+    <%= f.submit "Unfollow", class: "btn" %>
+<% end %>

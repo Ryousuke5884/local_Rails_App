@@ -2,6 +2,14 @@ class User < ApplicationRecord
   #micropostsとの関連付け　dependent: :destroyでこのユーザーモデルが消されたときhasManyのマイクロポストも消える
   has_many :microposts, dependent: :destroy
 
+  #relationshipモデルとの関連付け。上のmicropostsは名称が一緒だからRailsが自動でforeign_keyやclass_name(相手モデルのclassの名前)を割り当てているが、こっちは手動でやってるだけ。詳しくは14.1.2を参照
+  has_many :active_relationships, class_name: "Relationship",foreign_key: "follower_id",dependent: :destroy
+  #user.followedsのfollowedsは英語的におかしいので、followingがfollowedに対応すると明示的に伝えてるだけ
+  has_many :following, through: :active_relationships, source: :followed
+
+  #上のactive_relationshipsの逆でフォローされているほうの関連付け
+  has_many :passive_relationships, class_name: "Relationship",foreign_key: "followed_id",dependent: :destroy
+  has_many :followers, through: :passive_relationships, source: :follower
 
 
   #attr_accessorを使うと、remember_tokenにアクセスするセッターとゲッターを生成してくれる・constなどで箱を作らないのはユーザーごとに違う値を入れるから、これならインスタンスごとにremember_tokenを分けられる 
@@ -119,12 +127,35 @@ class User < ApplicationRecord
   end
 
 
-  # 試作 feed の定義
-  # 完全な実装は次章の「ユーザーをフォローする」を参照
+  #マイクロポストを自分の投稿とフォローしているユーザーの投稿のみ表示する。
   def feed
-    #User_id=?はSQLクエリに代入される前にidがエスケープされるのでSQLインジェクションを回避できる。Self.idが入るらしい。
-    Micropost.where("user_id = ?", id)
+    #最初の?には後ろのfollowing_ids、二つ目の?には後ろのidが入る。SQL文にRailsのメソッドを入れても?で置き換えて外で書けば文字列じゃなく評価してくれる。
+    #following_idsはActiveRecordがhas_many :micropostをした際に自動で作ってくれる
+    #Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
+
+    #二つ以上?がある時はハッシュ形式で明示的に書く方が良い。.includesにユーザーと画像も一緒にもってこいって指定するとこの検索の呼び出し一件で済む
+    Micropost.where("user_id IN (:following_ids) OR user_id = :user_id",following_ids: following_ids, user_id: id).includes(:user, image_attachment: :blob)
+
+    #しかしこの処理では数千のユーザー数になったとき重すぎるのでSQLのサブクエリを勉強する必要がある。リスト14.44
   end
+
+
+
+  #ユーザーをフォローする
+  def follow(other_user)
+    #<<は配列の一番後ろに要素を追加する、followingは現在あるユーザーがフォローしている配列(配列のように扱えるだけで実際はrelationshipテーブルのfollowed_id)、self == other_userは自分自身をフォローできなくする
+    following << other_user unless self == other_user
+  end
+
+  # ユーザーをフォロー解除する
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+  # 現在のユーザーが他のユーザーをフォローしていれば true を返す
+  def following?(other_user)
+    following.include?(other_user)
+  end
+
 
   private
     # メールアドレスをすべて小文字にする
